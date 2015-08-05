@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :sessions, only: :create
-    resources :meals, only: [:create, :show]
+    resources :meals, only: [:create, :index]
     resources :ingredients, only: :index
   end
 end

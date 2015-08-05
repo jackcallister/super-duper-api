@@ -2,19 +2,16 @@ class API::MealsController < ApplicationController
 
   # POST /api/meals
   def create
-    # temp
-    user = User.last
+    @meal = current_user.meals.create(meal_params)
 
-    @meal = user.meals.create(meal_params)
+    current_user.tag(@meal, with: params[:ingredients], on: :ingredients)
 
-    user.tag(@meal, with: params[:ingredients], on: :ingredients)
-
-    render json: @meal, serializer: MealSerializer, root: nil
+    @ingredientIds = @meal.ingredients.map { |i| i.id }
   end
 
-  def show
-    @meal = Meal.last
-    render json: @meal
+  def index
+    @meals = Meal.all
+    @ingredients = @meals.last.ingredients
   end
 
   private
